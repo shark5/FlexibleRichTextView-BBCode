@@ -3,7 +3,6 @@ package com.example.daquexian.flexiblerichtextview;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Toast;
 
 import com.daquexian.flexiblerichtextview.Attachment;
@@ -14,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MainActivity extends YouTubeBaseActivity {
-
-    ListView mList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,36 +58,27 @@ public class MainActivity extends YouTubeBaseActivity {
                         "[list] [*]Entry 1 [*]Entry 2 [/list]0000" +
                         "[list] [*]Entry 3 [*]Entry 4 [/list]" +
                         "[list] *Entry 5 *Entry 6 [/list]" +
-                        "[ol][li]Item 11[/il][li]Item 12[/il][/ol]" +
-                        "[ul][li]Item 21[/il][li]Item 22[/il][/ul]" +
-                        "[list][li]Item 31[/il][li]Item 32[/il][/list]" +
+                        "[list][li]Item 31[/li][li]Item 32[/li][/list]" +
                         "[code]String TAG = \"tag\"[/code]\n" +
                         "[center]This is some centered text[/center]" +
                         "";
 
         String originalStr2 =
                 "[list] [*]Entry 1 [*]Entry 2 [/list]" +
-                        "<h><center>[color=red]hi![/color]</center></h>" +
                         "[quote]This is quote\n" +
                         "second line\n" +
                         "third line\n" +
                         "fourth line[/quote]" +
                         "[img]http://tse1.mm.bing.net/th?id=OIP.M24baa78c1fb80a71891ce775d11e038ao0&w=166&h=166&c=7&qlt=90&o=4&pid=1.7[/img]" +
                         "Here is an attachment:[attachment:53ce1]" +
-                        "[code]print(\"Hello FlexibleRichTextView!\")[/code]" +
+                        "[code]print(\"Hello FlexibleRichTextView!\")\n" +
                         "Hello FlexibleRichTextView!\n" +
                         "This is LaTeX:\n" +
-                        "$e^{\\pi i} + 1 = 0$\n" +
-                        "This is table:\n" +
-                        "| First Header  | Second Header |\n" +
-                        "| --- | --- |\n" +
-                        "| Content [code]print(\"Hello!\")[/code]  | Content Cell  |\n" +
-                        "| Content [color=red]hi![/color]  | Content [img]http://tse1.mm.bing.net/th?id=OIP.M24baa78c1fb80a71891ce775d11e038ao0&w=166&h=166&c=7&qlt=90&o=4&pid=1.7[/img]  |\n" +
-                        "An attachment is shown at the bottom: \n";
+                        "$e^{\\pi i} + 1 = 0$[/code]\n" +
+                        "";
 
 
         String originalStr3 =
-//                "ABCD" +
                 "[img=250x160]http://i60.tinypic.com/1607k6.png[/img]\n" +
                         "[img width=250 height=160]http://i60.tinypic.com/1607k6.png[/img]\n" +
                         "[url=http://www.baidu.com][img]http://i60.tinypic.com/1607k6.png[/img][/url]\n" +
@@ -109,6 +97,7 @@ public class MainActivity extends YouTubeBaseActivity {
                 "[tr][td]AAA[/td][td]BB[/td][/tr]" +
                 "[tr][td][mxButton=bot_account_link]I am button[/mxButton][/td][td]dd[/td][/tr]" +
                 "[/table]";
+
         String originalStr6 =
                 "[B]text[/B][B]text22[/B]" +
                         "[size=45] Entry 2 size test [/size] \n" +
@@ -117,21 +106,16 @@ public class MainActivity extends YouTubeBaseActivity {
                         "[left]This is some left text[/left]\n" +
                         "[right]This is some right text[/right]\n" +
                         "[list][li]Item 21[/li][li]Item 22[/li][li]Item 23[/li][/list]" +
-                "[list][li]AAA[/li][li]BB[/li][/list]" +
+                        "[list][li]AAA[/li][li]BB[/li][/list]" +
                         "[i]text[/i]  [u]text[/u]  [s]text[/s]  [color=#FF0000]Red[/color] [color=red]Red2[/color]  " +
                         "";
-        flexibleRichTextView.setText(originalStr + originalStr2 + originalStr3 + originalStr4 + originalStr5 + originalStr6,
-                null);
 
-/*
-        mList = (ListView) findViewById(R.id.list);
-        MyAdapter adapter = new MyAdapter();
-        List<String> datas = new ArrayList<>();
-        for (int i = 0; i < 200; i++) {
-            datas.add(originalStr);
-        }
-        adapter.setData(datas);
-        mList.setAdapter(adapter);*/
+        String originalStr7 =
+                "[list] [*]Entry 3 [*]Entry 4 [/list]" +
+                        "[list] *Entry 5 *Entry 6 [/list]" +
+                        "";
+        flexibleRichTextView.setText(originalStr,
+                null);
 
     }
 }

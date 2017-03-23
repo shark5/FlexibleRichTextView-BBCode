@@ -165,7 +165,7 @@ public class FlexibleRichTextView extends LinearLayout {
         for (Map.Entry entry : bbMap.entrySet()) {
             text = text.replaceAll(entry.getKey().toString(), entry.getValue().toString());
         }
-
+        text = BBCodeMaps.bbcodeListParse(text);
         mAttachmentList = attachmentList;
         mTokenList = tokenizer(text, mAttachmentList);
 
