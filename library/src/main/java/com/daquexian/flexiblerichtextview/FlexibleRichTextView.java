@@ -9,12 +9,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.support.v4.content.ContextCompat;
 import android.text.Layout;
+import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.AbsoluteSizeSpan;
 import android.text.style.AlignmentSpan;
 import android.text.style.BackgroundColorSpan;
+import android.text.style.BulletSpan;
 import android.text.style.ClickableSpan;
 import android.text.style.ForegroundColorSpan;
 import android.text.style.ImageSpan;
@@ -23,7 +26,6 @@ import android.text.style.StrikethroughSpan;
 import android.text.style.StyleSpan;
 import android.text.style.UnderlineSpan;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,6 +36,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
@@ -144,6 +147,8 @@ public class FlexibleRichTextView extends LinearLayout {
                 myAddView((YoutubeView) o);
             } else if (o instanceof Button) {
                 myAddView((Button) o);
+            } else if (o instanceof LinearLayout) {
+                myAddView((LinearLayout) o);
             }
         }
     }
@@ -355,6 +360,11 @@ public class FlexibleRichTextView extends LinearLayout {
 
                     View table = table(thisToken().value);
                     append(ret, table);
+
+                } else if (thisToken() instanceof LIST) {
+
+                    View list = list(thisToken().value);
+                    append(ret, list);
 
                 } else if (thisToken() instanceof ATTACHMENT) {
 
@@ -685,6 +695,34 @@ public class FlexibleRichTextView extends LinearLayout {
         this.mTokenIndex = tokenIndex;
     }
 
+    private List<String> getListCellsContent(String text) {
+        Pattern pattern = Pattern.compile("\\[li\\](.+?)\\[/li\\]");
+        Matcher matcher = pattern.matcher(text);
+
+        List<String> cells = new ArrayList<>();
+        while (matcher.find()) {
+            if (!TextUtils.isEmpty(matcher.group(1))) {
+                String cell = matcher.group(1);
+                cells.add(cell);
+            }
+        }
+        return cells;
+    }
+
+    private View list(CharSequence str) {
+        LinearLayout layout = new LinearLayout(this.getContext());
+        layout.setOrientation(VERTICAL);
+        List<String> items = getListCellsContent(str.toString());
+        for (String item : items) {
+            TextView textView = new TextView(this.getContext());
+            Spannable msp = new SpannableString(item);
+            msp.setSpan(new BulletSpan(20), 0, 0, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            textView.setText(msp);
+            layout.addView(textView);
+        }
+        return layout;
+    }
+
     private View table(CharSequence str) {
         Pattern pattern = Pattern.compile("\\[th\\](.+?)\\[/th\\]");
         Matcher matcher = pattern.matcher(str);
@@ -758,7 +796,6 @@ public class FlexibleRichTextView extends LinearLayout {
 
         return scrollView;
     }
-
 
     private List<String> getCellsContent(String text) {
         Pattern pattern = Pattern.compile("\\[td\\](.+?)\\[/td\\]");

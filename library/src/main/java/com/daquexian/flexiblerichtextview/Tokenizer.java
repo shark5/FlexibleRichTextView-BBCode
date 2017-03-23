@@ -160,6 +160,7 @@ public class Tokenizer {
 
     static class SIZE_START extends TOKEN {
         String size;
+
         SIZE_START(int position, String size, String value) {
             super(position, value.length(), value);
             this.size = size;
@@ -211,6 +212,7 @@ public class Tokenizer {
 
     static class CENTER_START extends TOKEN {
         int align;
+
         CENTER_START(int position, String value, int align) {
             super(position, value.length(), value);
             this.align = align;
@@ -352,6 +354,12 @@ public class Tokenizer {
         }
     }
 
+    static class LIST extends TOKEN {
+        LIST(int position, String content) {
+            super(position, content.length(), content);
+        }
+    }
+
     static class END extends TOKEN {
         END(int position) {
             super(position, 0, "");
@@ -412,6 +420,7 @@ public class Tokenizer {
 
     //    private static final Pattern TABLE_REG = Pattern.compile("(?:\\n|^)( *\\|.+\\| *\\n)??( *\\|(?: *:?----*:? *\\|)+ *\\n)((?: *\\|.+\\| *(?:\\n|$))+)");
     private static final Pattern TABLE_REG = Pattern.compile("\\[table\\](.+?)\\[/table\\]");
+    private static final Pattern LIST_REG = Pattern.compile("\\[list\\](.+?)\\[/list\\]");
 
     public static int setUrlStartLabel(String... labels) {
         int ret = labels.length;
@@ -871,7 +880,7 @@ public class Tokenizer {
         setCurtainStartLabels("[curtain]");
         setCurtainEndLabels("[/curtain]");
         setCenterStartLabels("[center]", "[left]", "[right]");
-        setCenterEndLabels("[/center]","[/left]", "[/right]");
+        setCenterEndLabels("[/center]", "[/left]", "[/right]");
         setCodeStartLabels("[code]");
         setCodeEndLabels("[/code]");
         setTitleStartLabels("[h]");
@@ -1059,7 +1068,7 @@ public class Tokenizer {
             matcher = pattern.matcher(text);
 
             while (matcher.find()) {
-                tokenList.add(new  SIZE_START(matcher.start(), matcher.group(1), matcher.group()));
+                tokenList.add(new SIZE_START(matcher.start(), matcher.group(1), matcher.group()));
             }
         }
 
@@ -1247,26 +1256,23 @@ public class Tokenizer {
         matcher = pattern.matcher(text);
 
         while (matcher.find()) {
-            Log.e("0000", "" + matcher.start() + "--" + matcher.group());
             tokenList.add(new TABLE(matcher.start(), matcher.group()));
         }
 
+        pattern = LIST_REG;
+        matcher = pattern.matcher(text);
+
+        while (matcher.find()) {
+            tokenList.add(new LIST(matcher.start(), matcher.group()));
+        }
 
         final int[] indexInRegex = {1, 1, 1, 0, 1};
         Matcher[] matchers = new Matcher[PATTERNS.length];
-        for (
-                int i = 0;
-                i < PATTERNS.length; i++)
-
-        {
+        for (int i = 0; i < PATTERNS.length; i++) {
             matchers[i] = PATTERNS[i].matcher(text);
         }
 
-        for (
-                int i = 0;
-                i < matchers.length; i++)
-
-        {
+        for (int i = 0; i < matchers.length; i++) {
             matcher = matchers[i];
             int index = indexInRegex[i];
 
@@ -1286,11 +1292,7 @@ public class Tokenizer {
 
         Collections.sort(tokenList);
 
-        for (
-                int i = 0;
-                i < tokenList.size(); i++)
-
-        {
+        for (int i = 0; i < tokenList.size(); i++) {
             TOKEN token = tokenList.get(i);
 
             if (token instanceof TABLE) {
@@ -1309,20 +1311,12 @@ public class Tokenizer {
             }
         }
 
-        tokenList.add(new
-
-                END(text.length()
-
-        ));
+        tokenList.add(new END(text.length()));
 
         removeOverlappingTokens(tokenList);
 
         start = 0;
-        for (
-                int i = 0;
-                i < tokenList.size(); i++)
-
-        {
+        for (int i = 0; i < tokenList.size(); i++) {
             TOKEN token = tokenList.get(i);
             if (token.position > start) {
                 tokenList.add(i, new PLAIN(start, text.subSequence(start, token.position)));

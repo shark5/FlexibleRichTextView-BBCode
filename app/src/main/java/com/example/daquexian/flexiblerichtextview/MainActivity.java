@@ -1,6 +1,5 @@
 package com.example.daquexian.flexiblerichtextview;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,10 +10,8 @@ import com.daquexian.flexiblerichtextview.Attachment;
 import com.daquexian.flexiblerichtextview.FlexibleRichTextView;
 import com.google.android.youtube.player.YouTubeBaseActivity;
 
-
 import java.util.ArrayList;
 import java.util.List;
-
 
 public class MainActivity extends YouTubeBaseActivity {
 
@@ -113,18 +110,20 @@ public class MainActivity extends YouTubeBaseActivity {
                 "[tr][td][mxButton=bot_account_link]I am button[/mxButton][/td][td]dd[/td][/tr]" +
                 "[/table]";
         String originalStr6 =
-                "[B]text[/B] " +
+                "[B]text[/B][B]text22[/B]" +
                         "[size=45] Entry 2 size test [/size] \n" +
                         "[code]String TAG = \"tag\"; \n int a = 100 * 90;[/code]\n" +
                         "[center]This is some centered text[/center]\n" +
                         "[left]This is some left text[/left]\n" +
                         "[right]This is some right text[/right]\n" +
-//                        "[i]text[/i]  [u]text[/u]  [s]text[/s]  [color=#FF0000]Red[/color] [color=red]Red2[/color]  " +
+                        "[list][li]Item 21[/li][li]Item 22[/li][li]Item 23[/li][/list]" +
+                "[list][li]AAA[/li][li]BB[/li][/list]" +
+                        "[i]text[/i]  [u]text[/u]  [s]text[/s]  [color=#FF0000]Red[/color] [color=red]Red2[/color]  " +
                         "";
-        flexibleRichTextView.setText(originalStr6,
+        flexibleRichTextView.setText(originalStr + originalStr2 + originalStr3 + originalStr4 + originalStr5 + originalStr6,
                 null);
 
-
+/*
         mList = (ListView) findViewById(R.id.list);
         MyAdapter adapter = new MyAdapter();
         List<String> datas = new ArrayList<>();
@@ -132,6 +131,7 @@ public class MainActivity extends YouTubeBaseActivity {
             datas.add(originalStr);
         }
         adapter.setData(datas);
-        mList.setAdapter(adapter);
+        mList.setAdapter(adapter);*/
+
     }
 }
